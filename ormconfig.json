@@ -1,0 +1,10 @@
+[
+    {
+    "type": "mongodb",
+    "url": "mongodb+srv://infospefind:%40GwXdwLx0vVWQbSFZ@cluster0.ky1upco.mongodb.net/hephzit",
+    "synchronize": true,
+    "useNewUrlParser": true,
+    "useUnifiedTopology": true,
+    "entities": ["dist/**/*.entity{.ts,.js}"]
+    }
+]

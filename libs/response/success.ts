@@ -8,4 +8,5 @@ export function SuccessResponse (httpCode: number, msg: string, data: object, me
         data: data,
         meta: meta
     }
+    return body
 }
