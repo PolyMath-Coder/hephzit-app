@@ -7,10 +7,11 @@ import { UtilsModule, UtilsService } from 'lib/utils';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), PassportModule,  JwtModule.register({secret: 'hephzit', signOptions: { expiresIn: '60000000000000000s' }}), UtilsModule],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, UtilsService],
+  providers: [AuthService, LocalStrategy, JwtStrategy, UtilsService],
 })
 export class AuthModule {}

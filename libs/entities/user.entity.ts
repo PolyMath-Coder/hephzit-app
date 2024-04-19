@@ -16,5 +16,8 @@ export class User {
     email: string;
 
     @Column()
+    walletBalance: number
+
+    @Column()
     password: string
 }

@@ -42,17 +42,23 @@ export class AuthService {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      password: hashed_password
+      password: hashed_password,
+      walletBalance: 0.0
+
     }
 
     const data = await this.userRepo.save(user_payload)
+    const user_data =  {
+      id: data.id,
+      email: email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      walletBalance: 0
+    }
 
-    const token = this.jwtService.sign(JSON.parse(JSON.stringify(user_payload)))
+    const token = this.jwtService.sign(JSON.parse(JSON.stringify(user_data)))
 
-    
-    
-
-    return this.utilService.SuccessResponse(201, 'user creation successful', {data, token},  null);
+    return this.utilService.SuccessResponse(201, 'user creation successful', {...user_data, token: token},  null);
 
   }
 
