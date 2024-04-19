@@ -1,10 +1,14 @@
-import { Controller, Req, Res, Body, Get, Post } from '@nestjs/common';
+import { Controller, Req, Res, Body, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UtilsService } from 'lib/utils';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private utilService: UtilsService,
+  constructor(private readonly authService: AuthService,
+    private jwtService: JwtService,
+     private utilService: UtilsService,
    
 
   ) {}
@@ -15,9 +19,11 @@ export class AuthController {
     res.status(response.responseCode).json(response)
   }
 
-  
+  @UseGuards(AuthGuard('local'))
   @Post('login')
-  getHello(): string {
-    return this.authService.getHello();
-  }
+  login(@Req() req) {
+    return this.utilService.SuccessResponse(200, 'Login Successful!',  { token: this.jwtService.sign(JSON.parse(JSON.stringify(req.user)))}, null)
+   
+    }
 }
+

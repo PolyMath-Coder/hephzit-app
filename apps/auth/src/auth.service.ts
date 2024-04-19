@@ -12,12 +12,26 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor( @InjectRepository(User) private readonly userRepo: Repository<User>, 
+  constructor( 
+  @InjectRepository(User) private readonly userRepo: Repository<User>, 
   private readonly utilService: UtilsService,
   private jwtService: JwtService
 ) {}
 
-  async createUser ({firstName, lastName, email, password}:RegisterDto) {
+ async validateUser (email: string, password: string)  {
+     const user = await this.userRepo.findOneBy({ email: email });
+    if(!user) {
+      return this.utilService.ErrorResponse(404, 'user not found', null, null)
+    }
+
+    const compare_password = await bcrypt.compare(password, user.password)
+    if(!compare_password) {
+      return this.utilService.ErrorResponse(400, 'incorrect password inputted', null, null)
+    }
+    return user
+  }
+
+  async createUser ({firstName, lastName, email, password}: RegisterDto) {
     const check_user = await this.userRepo.findOneBy({email: email})
    
     // if(check_user) {
@@ -42,6 +56,17 @@ export class AuthService {
 
   }
 
+  async comparePassword (email: string, password: string) {
+    const user = await this.userRepo.findOneBy({ email });
+    console.log(user)
+    // const compare_password = await bcrypt.compare(password, user.password)
+    // console.log(compare_password)
+    // if(!compare_password) {
+    //   return this.utilService.ErrorResponse(400, 'password not valid', null, null)
+    // }
+    // return compare_password;
+  }
+   
 
   getHello(): string {
     return 'Hello in this World!';

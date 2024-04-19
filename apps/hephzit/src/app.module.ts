@@ -6,10 +6,12 @@ import { WalletModule } from 'apps/wallet/src/wallet.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'libs/entities/user.entity';
 import { UtilsModule, UtilsService } from 'lib/utils';
+import { LocalStrategy } from 'apps/auth/src/local.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    AuthModule, 
+    AuthModule,
     WalletModule,
     UtilsModule,
     TypeOrmModule.forRoot({type: 'mongodb', url: 'mongodb+srv://infospefind:%40GwXdwLx0vVWQbSFZ@cluster0.ky1upco.mongodb.net/hephzit', useNewUrlParser: true, useUnifiedTopology: true, synchronize: true, autoLoadEntities: true})],
