@@ -11,7 +11,6 @@ export class WalletController {
   @UseGuards(JwtAuthGuard)
   @Get('check-balance')
   async walletBalance(@Req() req) {
-    // console.log(req.user)
     return await this.walletService.walletBalanceCheck(req.user._id)
   }
 
