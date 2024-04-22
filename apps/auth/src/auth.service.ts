@@ -28,15 +28,16 @@ export class AuthService {
     if(!compare_password) {
       return this.utilService.ErrorResponse(400, 'incorrect password inputted', null, null)
     }
+    console.log(user)
     return user
   }
 
   async createUser ({firstName, lastName, email, password}: RegisterDto) {
     const check_user = await this.userRepo.findOneBy({email: email})
    
-    // if(check_user) {
-    //   return this.utilService.ErrorResponse(400, 'user with email already exists', null, null);
-    // }
+    if(check_user) {
+      return this.utilService.ErrorResponse(400, 'user with email already exists', null, null);
+    }
     const hashed_password = await bcrypt.hash(password, 10)
     const user_payload = {
       firstName: firstName,
@@ -49,7 +50,7 @@ export class AuthService {
 
     const data = await this.userRepo.save(user_payload)
     const user_data =  {
-      id: data.id,
+      id: data._id,
       email: email,
       firstName: data.firstName,
       lastName: data.lastName,
