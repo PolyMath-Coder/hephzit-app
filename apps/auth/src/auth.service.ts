@@ -8,6 +8,7 @@ import { ErrorResponse } from 'libs/response/error';
 import { SuccessResponse } from 'libs/response/success';
 import { UtilsService } from 'lib/utils';
 import { JwtService } from '@nestjs/jwt';
+import { ObjectId } from 'mongodb';
 
 
 @Injectable()
@@ -19,16 +20,15 @@ export class AuthService {
 ) {}
 
  async validateUser (email: string, password: string)  {
-     const user = await this.userRepo.findOneBy({ email: email });
+     const user = await this.userRepo.findOneBy({email: email});
     if(!user) {
       return this.utilService.ErrorResponse(404, 'user not found', null, null)
     }
 
     const compare_password = await bcrypt.compare(password, user.password)
     if(!compare_password) {
-      return this.utilService.ErrorResponse(400, 'incorrect password inputted', null, null)
+      return this.utilService.ErrorResponse(400, 'incorrect password inputted.', null, null)
     }
-    console.log(user)
     return user
   }
 
@@ -36,7 +36,7 @@ export class AuthService {
     const check_user = await this.userRepo.findOneBy({email: email})
    
     if(check_user) {
-      return this.utilService.ErrorResponse(400, 'user with email already exists', null, null);
+      return this.utilService.ErrorResponse(400, 'user with email already exists.', null, null);
     }
     const hashed_password = await bcrypt.hash(password, 10)
     const user_payload = {
@@ -50,7 +50,7 @@ export class AuthService {
 
     const data = await this.userRepo.save(user_payload)
     const user_data =  {
-      id: data._id,
+      _id: data._id,
       email: email,
       firstName: data.firstName,
       lastName: data.lastName,
@@ -73,7 +73,22 @@ export class AuthService {
     // }
     // return compare_password;
   }
+
+  async findUserByEmail (email: string) {
+    try {
+      return await this.userRepo.findOneBy({ email });
+    } catch(error) {
+      return this.utilService.ErrorResponse(404, 'unable to locate user by ID', null, null)
+    }
+  }
    
+  async getUserById (id: string) {
+    try {
+      return await this.userRepo.findOneBy({_id: new ObjectId(id)})
+    }catch(error) {
+      throw new ForbiddenException('unable to retrieve user by ID')
+    }
+  }
 
   getHello(): string {
     return 'Hello in this World!';

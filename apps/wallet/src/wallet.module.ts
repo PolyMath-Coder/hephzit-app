@@ -7,10 +7,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'libs/entities/user.entity';
 import { Transaction } from 'libs/entities/transaction.entity';
 import { UtilsService } from 'lib/utils';
+import { AuthService } from 'apps/auth/src/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Transaction])],
   controllers: [WalletController],
-  providers: [WalletService, WalletService, UtilsService],
+  providers: [WalletService, JwtService, AuthService, UtilsService],
 })
 export class WalletModule {}

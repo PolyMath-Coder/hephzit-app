@@ -1,7 +1,7 @@
 import {IsString, IsEmail, IsNumber, IsEnum, IsNotEmpty, IsOptional} from 'class-validator'
 import { TransactionTypeEnum } from 'libs/enums/enums'
 
-export class WalletTransactionDto {
+export class InAppWalletTransactionDto {
     @IsNumber()
     @IsNotEmpty()
     amount: number
@@ -11,9 +11,28 @@ export class WalletTransactionDto {
     description: string
 
     @IsString()
-    @IsNotEmpty()
-    transaction_type: TransactionTypeEnum
+    @IsOptional()
+    transaction_type?: TransactionTypeEnum
 }
+
+export class WalletTransactionDto {
+    @IsNumber()
+    @IsNotEmpty()
+    amount: number
+
+    @IsString()
+    @IsNotEmpty()
+    user_id: string
+
+    @IsString()
+    @IsOptional()
+    description?: string
+
+    @IsString()
+    @IsOptional()
+    transaction_type?: TransactionTypeEnum
+}
+
 
 export class LoginDto {
     @IsString()
