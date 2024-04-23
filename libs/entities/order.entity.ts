@@ -1,3 +1,4 @@
+import { OrderTypeEnum } from "libs/enums/enums";
 import { Column, Entity, ObjectId, ObjectIdColumn } from "typeorm";
 
 
@@ -12,6 +13,9 @@ export class Order {
 
     @Column()
     pair: string
+
+    @Column()
+    type: string
 
     @Column()
     amount: number
