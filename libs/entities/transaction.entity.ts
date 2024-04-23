@@ -16,6 +16,9 @@ export class Transaction {
     @Column()
     description: string
 
-    // @CreateDateColumn()
-    // createdAt: Timestamp
+    @Column()
+    amount: number
+
+    @CreateDateColumn()
+    createdAt: Timestamp
 }

@@ -24,6 +24,14 @@ export class WalletController {
   @UseGuards(JwtAuthGuard)
   @Post('credit')
   async creditTransaction(@Req() req, @Body()body: WalletTransactionDto, @Res() res ) {
-    await this.walletService.creditTransaction(req.user._id, body)
+   const data = await this.walletService.creditTransaction(req.user._id, body)
+   res.status(data.responseCode).json(data)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('transaction-history')
+  async viewTransactionHistory(@Req() req, @Res() res) {
+    const data = await this.walletService.viewTransactionHistory(req.user._id)
+    res.status(data.responseCode).json(data)
   }
 }
