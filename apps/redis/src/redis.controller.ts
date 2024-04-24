@@ -6,7 +6,7 @@ export class RedisController {
   constructor(private readonly redisService: RedisService) {}
 
   @Get('call-redis')
-  getHello() {
+  callRedis() {
     return this.redisService.ping()
   }
 }
