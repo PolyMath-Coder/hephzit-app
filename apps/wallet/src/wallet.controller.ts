@@ -15,21 +15,19 @@ export class WalletController {
     return await this.walletService.walletBalanceCheck(req.user._id)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('debit')
   async debitTransaction(@Req() req, @Body() body: InAppWalletTransactionDto, @Res() res) {
   const data = await this.walletService.debitTransaction(req.user._id, body)
   res.status(data.responseCode).json(data)
 }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Post('credit')
   async creditTransaction(@Req() req, @Body()body: WalletTransactionDto, @Res() res ) {
    const data = await this.walletService.creditTransaction(req.user._id, body)
    res.status(data.responseCode).json(data)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('transaction-history')
   async viewTransactionHistory(@Req() req, @Res() res) {
     const data = await this.walletService.viewTransactionHistory(req.user._id)
