@@ -6,16 +6,27 @@ import { InAppWalletTransactionDto, WalletTransactionDto } from 'libs/dtos/walle
 import { Transaction } from 'libs/entities/transaction.entity';
 import { User } from 'libs/entities/user.entity';
 import { TransactionTypeEnum } from 'libs/enums/enums';
-import { MongoDBNamespace, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
+
 import {  Repository } from 'typeorm';
+import axios from 'axios'
+import { GrpcService } from 'apps/grpc/src/grpc.service';
+import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class WalletService {
-
+  private grpcClient: GrpcService
   constructor(@InjectRepository(User) private readonly userRepo: Repository<User>, 
+  private readonly client: ClientGrpc,
   private readonly authService: AuthService,
   private readonly utilService: UtilsService,
   @InjectRepository(Transaction) private readonly transactionRepo: Repository<Transaction>){}
+
+  async requestForexRate () {
+    const reply = await this.grpcClient.fetchExchangeRateData();
+    return reply
+  }
+
   async walletBalanceCheck (id: string) {
     
    const {firstName, lastName, walletBalance } = await this.userRepo.findOneBy({_id: new ObjectId(id)})
@@ -82,8 +93,9 @@ export class WalletService {
   async viewTransactionHistory(userId: ObjectId) {
    const transaction_log = await this.transactionRepo.find({ where: { userId: userId }, select: ["_id", "amount", "description", "transaction_type"] })
    if(transaction_log.length === 0) {
-    return this.utilService.ErrorResponse(404, 'no transactions yet performed by user...', null, null)
+    return this.utilService.ErrorResponse(404, 'no transaction yet performed by user...', null, null)
    };
    return this.utilService.SuccessResponse(200, 'all user transactions now retrieved...', transaction_log, null)
+  
   }
 }

@@ -32,6 +32,6 @@ export class WalletController {
   @Get('transaction-history')
   async viewTransactionHistory(@Req() req, @Res() res) {
     const data = await this.walletService.viewTransactionHistory(req.user._id)
-    res.status(data.responseCode).json(data)
+    //res.status(data.responseCode).json(data)
   }
 }
