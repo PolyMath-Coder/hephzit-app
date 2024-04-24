@@ -7,6 +7,7 @@ export class AppController {
 
   @Get()
   getHello(): object {
+    console.log(__dirname)
     return this.appService.getHello();
   }
 }
