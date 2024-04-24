@@ -1,5 +1,5 @@
 import { Timestamp } from "mongodb";
-import { Column, CreateDateColumn, Entity, ObjectId, ObjectIdColumn, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ObjectId, ObjectIdColumn } from "typeorm";
 
 
 @Entity('transaction')

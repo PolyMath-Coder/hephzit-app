@@ -6,7 +6,7 @@ dotenv.config()
 const EXCHANGE_RATE_API_KEY = process.env.EXCHANGE_RATE_API_KEY
 
 @Injectable()
-export class GrpcService {
+export class GRPCService {
   constructor( private readonly utilService: UtilsService) {
    
   }

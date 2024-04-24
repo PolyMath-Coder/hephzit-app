@@ -9,10 +9,12 @@ import { Transaction } from 'libs/entities/transaction.entity';
 import { UtilsService } from 'lib/utils';
 import { AuthService } from 'apps/auth/src/auth.service';
 import { JwtService } from '@nestjs/jwt';
+// import { GrpcService } from '@nestjs/microservices';
+import { GRPCService } from 'apps/grpc/src/grpc.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Transaction])],
   controllers: [WalletController],
-  providers: [WalletService, JwtService, AuthService, UtilsService],
+  providers: [WalletService, GRPCService,  JwtService, AuthService, UtilsService],
 })
 export class WalletModule {}

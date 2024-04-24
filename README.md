@@ -1,10 +1,10 @@
-# Elite Reward Backend Assessment
+# Hephzit Backend Assessment
 
 ---
 
 ## Useful Links.
 
-•⁠  ⁠[Postman Documentation](https://documenter.getpostman.com/view/26264962/2s9YsJBXdt)
+•⁠  ⁠[Postman Documentation](https://documenter.getpostman.com/view/27074715/2sA3BrYW9j)
 
 ## Stack
 

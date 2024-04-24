@@ -10,22 +10,22 @@ import { ObjectId } from 'mongodb';
 
 import {  Repository } from 'typeorm';
 import axios from 'axios'
-import { GrpcService } from 'apps/grpc/src/grpc.service';
+import { GRPCService } from 'apps/grpc/src/grpc.service';
 import { ClientGrpc } from '@nestjs/microservices';
 
 @Injectable()
 export class WalletService {
-  private grpcClient: GrpcService
+  // private grpcClient: GRPCService
   constructor(@InjectRepository(User) private readonly userRepo: Repository<User>, 
-  private readonly client: ClientGrpc,
+  //private readonly client: ClientGrpc,
   private readonly authService: AuthService,
   private readonly utilService: UtilsService,
   @InjectRepository(Transaction) private readonly transactionRepo: Repository<Transaction>){}
 
-  async requestForexRate () {
-    const reply = await this.grpcClient.fetchExchangeRateData();
-    return reply
-  }
+  // async requestForexRate () {
+  //   const reply = await this.grpcClient.fetchExchangeRateData();
+  //   return reply
+  // }
 
   async walletBalanceCheck (id: string) {
     

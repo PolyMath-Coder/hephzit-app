@@ -1,10 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
-import { GrpcService } from './grpc.service';
+import { GRPCService } from './grpc.service';
 import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller()
 export class GrpcController {
-  constructor(private readonly grpcService: GrpcService) {}
+  constructor(private readonly grpcService: GRPCService) {}
 
   @GrpcMethod('RateService', 'MessageRequest')
   async fetchRates(data: { message: string} ) {

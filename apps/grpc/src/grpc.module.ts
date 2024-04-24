@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
 import { GrpcController } from './grpc.controller';
-import { GrpcService } from './grpc.service';
+import { GRPCService } from './grpc.service';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { UtilsService } from 'lib/utils';
 import * as dotenv from 'dotenv'
+import { WalletModule } from 'apps/wallet/src/wallet.module';
 dotenv.config()
 const GRPC_PORT = process.env.GRPC_SERVER_PORT
 @Module({
   imports: [],
   controllers: [GrpcController],
-  providers: [GrpcService, UtilsService],
+  providers: [GRPCService, UtilsService],
 })
 export class GrpcModule {
 

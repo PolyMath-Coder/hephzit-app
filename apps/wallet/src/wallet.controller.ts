@@ -4,11 +4,12 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'apps/auth/src/jwt-auth.guard';
 import { InAppWalletTransactionDto, WalletTransactionDto } from 'libs/dtos/wallet.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('wallet')
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
-  @UseGuards(JwtAuthGuard)
+  
   @Get('check-balance')
   async walletBalance(@Req() req) {
     return await this.walletService.walletBalanceCheck(req.user._id)
@@ -32,6 +33,6 @@ export class WalletController {
   @Get('transaction-history')
   async viewTransactionHistory(@Req() req, @Res() res) {
     const data = await this.walletService.viewTransactionHistory(req.user._id)
-    //res.status(data.responseCode).json(data)
+    res.status(data.responseCode).json(data)
   }
 }
