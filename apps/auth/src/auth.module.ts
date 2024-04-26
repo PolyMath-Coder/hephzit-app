@@ -8,9 +8,12 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import * as dotenv from 'dotenv'
+dotenv.config()
+const JWT_SECRET = process.env.JWT_SECRET
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), PassportModule,  JwtModule.register({secret: 'hephzit', signOptions: { expiresIn: '2d' }}), UtilsModule],
+  imports: [TypeOrmModule.forFeature([User]), PassportModule,  JwtModule.register({secret: JWT_SECRET , signOptions: { expiresIn: '2d' }}), UtilsModule],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, UtilsService],
 })
