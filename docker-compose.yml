@@ -1,100 +1,22 @@
-version: "3.8"
-
-# virtual networks inside cluster, to let runing containers talk to each other
-networks:
-  nginx-reverse: # root nginx-reverse to api-example and wp
-
-# declare all services: nginx-reverse (api-example (redis, mongo), wp (mysql))
+version: '3.8'
 services:
-  # root service: nginx as reverse-proxy for 1) api-example and 2) wp
-  nginx-reverse:
-    image: nginx
-    restart: always
-    deploy:
-      placement: # to run this service on a specific node
-        constraints:
-          - 'node.role == manager'
-    ports: # exposed ports out of cluster
-      - 3000:80
-      # - 3003:80 #websocket client port
-      # - 3000:443 # if you have certs
-    networks:
-      - nginx-reverse
-    depends_on: # do not start service until dependencies are started
-      - api
-    volumes:
-      - ./nginx-reverse/default.conf:/etc/nginx/conf.d/default.conf  
-
-  # 1) api-example + redis + mongo
-  api:
-    image: backend-api # specify your repo name
-    build: # to build image with docker-compose
-      context: ../../
-      # dockerfile: /var/www/html/backend-api/Dockerfile
-    restart: always
-    # deploy: # uncomment to run multiple api-example services
-    #   replicas: 4
-    #   resources:
-    #     limits:
-    #       cpus: "1.5"
-    #       memory: 256M
-    env_file:
-      - .env
-
-    environment:
-      
-      - PORT=${PORT}
-    
-      - JWT_SECRET=${JWT_SECRET}
-
-    
-    networks:
-      - nginx-reverse
-
-
-
-# version: '3.2'
-# services:
-#   vendpal:
-#     container_name: vendpal
-#     build:
-#       context: .
-#       dockerfile: 'Dockerfile'
-#     command: >
-#       sh -c "npm run start:prod"
-#     # command: rm -rf node_modules  && npm install --production && npm run seed && npm run start:prod
-#     env_file:
-#       - .env
-#     ports:
-#       - ${PORT}:${PORT}
-#   #   volumes:
-#   #     - ./:/brand-district
-#   #   depends_on:
-#   #     - redis
-#   #   links:
-#   #     - redis
-#   # redis:
-#   #   container_name: redis
-#   #   image: redis
-#   #   restart: always
-#     environment:
-#       - ALLOW_EMPTY_PASSWORD=yes
-#       - DATABASE_HOST=data-cluster-do-user-11652658-0.b.db.ondigitalocean.com
-#       - DATABASE_PORT=25060
-#       - DATABASE_USER=vendpal-dev
-#       - DATABASE_PASSWORD=AVNS_Zow64DL63eBKuz6Qtpd
-#       - DATABASE_NAME=vendpal-db-dev
-#       - GOOGLE_CLIENT_ID=364235602620-pc67vguo0pi9rd65d411rtcdo4hl5661.apps.googleusercontent.com
-#       - GOOGLE_SECRET=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
-#       # - NODE_ENV="dev"
-#       # - PORT=3000
-#       - JWT_SECRET= MIICXAIBAAKBgQCGhLlpouwodWJ7O+ErKGXSGw18oKN7OKgaxxa878PWRAdKGxDCLape3t/MS12R8kq98qppBqaTq9whX1k/cYIPsBqbLFib1ZXwlJ2635lp+X1h2ij8w1IMYkCtkpcaS9J1NWyRp2YGRFIb4fSu1DLVeBEt+JoQhUikQmmbYEgrqQIDAQABAoGAA9BLeWU3EMaTLi86aQDSMiy2KyxatimbCndOe7jIcpCnLECsLvUgeWQUMDSKyJJ37/6rOiMIIfOjYAbV/uh26XReoxgrrd+keiohSAmoS8J+gTZbPyniLbnpc/emBfdiF2etJ6G5RD4bAWSnYZMFR3zLTv0w+bUhK5W3bYuyHSECQQDNvjAMT9JSRB3es0zsDFjtqY2ogDNkEzhOPJc7+cT9K9LSEZpdq9HrDGih714Y/NlkM8Lublfsxz2OqJh3173NAkEAp2CgMqqJrOGx1a6b12W9t3fUoF+Nay9zV6R7mDNLMW7ckHiL+NzuKoehHBcyFpS1hdbVnVPUadBj0wdh0rdpTQJACAiYGbL4NGwienKn20O0KTuIo362Av9ZIHzvLtFW5sfSSI+VZnjyDmqCn2gYVYNx/Z6jyumWF1HETpC4u106NQJBAJfPAt2RYdekyLfna7+crsrl67sdj1WlLvdR3yu3cj6+r1x1iXbJY1a9tzmULEDg1hczOII+k0z5zmCLtIT7B40CQFRsWGw6bw2z+QHfdLTClV3OQndvPMV4VAdnJFxBqcAA2ZRCLbcV9QV/YsXf/k0xT0l8tuWgfR0RSKR8WTSikzU=
-# #     # ports: # exposed ports out of cluster
-# #     #   - 3000:3000  
-#   #   ports:
-#   #     - ${REDIS_PORT}:${REDIS_PORT}
-#   #   volumes:
-#   #     - redis-data:/var/opt/redislabs
-# volumes:
-#   redis-data:
-#     driver: local
+  auth: 
+    build: 
+      context: ./apps/auth
+    ports:
+      -3001:3001
+  grpc:
+    build: 
+      context: ./apps/grpc
+    ports:
+      -3002:3002
+  orders:
+    build: 
+      context: ./apps/orders
+    ports:
+      -3003:3003
+  wallet:
+    build: 
+      context: ./apps/wallet
+    ports:
+      -3003:3003
